@@ -1,12 +1,3 @@
-.vscode/launch.json
-.vscode/tasks.json
-obj/project.assets.json
-obj/project.nuget.cache
-obj/TripletFinder.csproj.nuget.dgspec.json
-obj/TripletFinder.csproj.nuget.g.props
-obj/TripletFinder.csproj.nuget.g.targets
-obj/Debug/net7.0/.NETCoreApp,Version=v7.0.AssemblyAttributes.cs
-obj/Debug/net7.0/apphost.exe
-obj/Debug/net7.0/TripletFinder.assets.cache
-obj/Debug/net7.0/TripletFinder.csproj.FileListAbsolute.txt
-obj/Debug/net7.0/TripletFinder.GlobalUsings.g.cs
+.vscode/
+obj/
+bin/
