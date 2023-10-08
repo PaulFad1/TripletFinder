@@ -39,7 +39,7 @@ public class TripletFinder
             }
             catch (ArgumentOutOfRangeException ex)
             {
-                
+
             }
 
         }
@@ -47,11 +47,19 @@ public class TripletFinder
 
     public async Task<Dictionary<string, int>> GetTopTriplets(int top)
     {
-        string text;
-        using (StreamReader streamReader = new(Path))
+        string text = "";
+        try
         {
-            text = await streamReader.ReadToEndAsync();
+            using (StreamReader streamReader = new(Path))
+            {
+                text = await streamReader.ReadToEndAsync();
+            }
         }
+        catch(FileNotFoundException ex)
+        {
+            Console.WriteLine("Файл не найден");
+        }
+
         string[] words = text.Split(' ');
         Parallel.ForEach(words, word => GetTripletsWord(word));
         return Triplets.OrderByDescending(x => x.Value).Take(top).ToDictionary(x => x.Key, x => x.Value);
