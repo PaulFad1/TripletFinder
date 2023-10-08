@@ -9,11 +9,11 @@ class Program
         TripletFinder tripletFinder = new(args[0]);
         stopwatch.Start();
         var result = await tripletFinder.GetTopTriplets(10);
-        stopwatch.Stop();
         foreach(var el in result)
         {
             Console.WriteLine(el.Key + " " + el.Value);
         }
+        stopwatch.Stop();
         Console.WriteLine("Время выполнения:" + stopwatch.ElapsedMilliseconds);
     }
 }

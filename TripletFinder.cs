@@ -1,47 +1,47 @@
-using Microsoft.VisualBasic;
+using System.Text.RegularExpressions;
 
 public class TripletFinder
 {
     public string Path { get; set; }
     public static Dictionary<string, int> Triplets { get; set; }
+    private static Regex regularEx;
     private static Object obj;
     public TripletFinder(string path)
     {
         Path = path;
         Triplets = new Dictionary<string, int>();
         obj = new();
+        regularEx = new("[a-zа-я]");
     }
-    public static void GetTripletsSentence(string sentence)
+    public static void GetTripletsWord(string word)
     {
-
-        char litera = '.';
-        int count = 0;
-        for (int i = 0; i < sentence.Length; i++)
+        for (int i = 0; i < word.Length; i++)
         {
-            if (count == 3)
+            try
             {
-                string str = "" + litera;
-                lock (obj)
+                var triplet = word.Substring(i, 3);
+                triplet = triplet.ToLower();
+                MatchCollection matchCollection = regularEx.Matches(triplet);
+                if (matchCollection.Count == 3)
                 {
-                    if (Triplets.ContainsKey(str))
+                    lock (obj)
                     {
-                        Triplets[str]++;
-                    }
-                    else
-                    {
-                        Triplets.Add(str, 1);
+                        if (Triplets.ContainsKey(triplet))
+                        {
+                            Triplets[triplet]++;
+                        }
+                        else
+                        {
+                            Triplets.Add(triplet, 1);
+                        }
                     }
                 }
             }
-            if (sentence[i] != litera)
+            catch (ArgumentOutOfRangeException ex)
             {
-                litera = sentence[i];
-                count = 1;
+                
             }
-            else
-            {
-                count++;
-            }
+
         }
     }
 
@@ -52,8 +52,8 @@ public class TripletFinder
         {
             text = await streamReader.ReadToEndAsync();
         }
-        string[] sentences = text.Split('.');
-        Parallel.ForEach(sentences, sentence => GetTripletsSentence(sentence));
+        string[] words = text.Split(' ');
+        Parallel.ForEach(words, word => GetTripletsWord(word));
         return Triplets.OrderByDescending(x => x.Value).Take(top).ToDictionary(x => x.Key, x => x.Value);
     }
 }
